@@ -534,6 +534,10 @@ input[type="checkbox"]:checked + .toggle-track .toggle-thumb {
 }
 
 /* Custom styled popups for MapLibre */
+.maplibregl-popup {
+  max-width: min(320px, calc(100vw - 32px)) !important;
+}
+
 .maplibregl-popup-content {
   background: var(--panel) !important;
   backdrop-filter: blur(12px) !important;
@@ -543,6 +547,8 @@ input[type="checkbox"]:checked + .toggle-track .toggle-thumb {
   border: 1px solid var(--panel-border) !important;
   box-shadow: var(--shadow) !important;
   padding: 15px !important;
+  max-width: min(320px, calc(100vw - 32px)) !important;
+  overflow-wrap: anywhere;
 }
 
 .maplibregl-popup-anchor-top .maplibregl-popup-tip { border-bottom-color: var(--panel-border) !important; }
@@ -573,7 +579,8 @@ input[type="checkbox"]:checked + .toggle-track .toggle-thumb {
 .popup-table {
   border-collapse: collapse;
   width: 100%;
-  min-width: 250px;
+  min-width: min(250px, calc(100vw - 80px));
+  table-layout: fixed;
   font-family: var(--font-sans);
   font-size: 12.5px;
 }
@@ -596,6 +603,8 @@ input[type="checkbox"]:checked + .toggle-track .toggle-thumb {
   color: var(--text-muted);
   font-weight: 600;
   vertical-align: middle;
+  width: 92px;
+  overflow-wrap: break-word;
 }
 
 .popup-table td {
@@ -603,6 +612,9 @@ input[type="checkbox"]:checked + .toggle-track .toggle-thumb {
   color: var(--text-main);
   font-weight: 500;
   vertical-align: middle;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: normal;
 }
 
 .popup-table td.number {
@@ -614,6 +626,8 @@ input[type="checkbox"]:checked + .toggle-track .toggle-thumb {
   color: var(--accent-neon);
   text-decoration: none;
   font-weight: 600;
+  overflow-wrap: anywhere;
+  word-break: normal;
 }
 
 .popup-table a:hover {

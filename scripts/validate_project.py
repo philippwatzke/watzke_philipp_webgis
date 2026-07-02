@@ -8,7 +8,6 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 
 EXPECTED_FILES = [
-    "20260513_Prüfungsleistung_OpenSource_WebGIS_NATO.pdf",
     "data/nato_defence_spending.csv",
     "data/nato_defence_spending.geojson",
     "data/nato_defence_spending.gpkg",

@@ -6,7 +6,6 @@ Dieses Projekt stellt die NATO-Verteidigungsausgaben aller aktuellen Mitgliedsta
 
 ```text
 watzke_philipp_webgis/
-|-- 20260513_Prüfungsleistung_OpenSource_WebGIS_NATO.pdf
 |-- data/
 |   |-- nato_defence_spending.csv
 |   |-- nato_defence_spending.geojson
