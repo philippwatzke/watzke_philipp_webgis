@@ -1,0 +1,86 @@
+services:
+  postgis:
+    image: postgis/postgis:16-3.5
+    container_name: nato_postgis
+    environment:
+      POSTGRES_DB: nato
+      POSTGRES_USER: nato
+      POSTGRES_PASSWORD: nato
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgis_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nato -d nato"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+
+  postgis-loader:
+    image: ghcr.io/osgeo/gdal:ubuntu-small-latest
+    container_name: nato_postgis_loader
+    depends_on:
+      postgis:
+        condition: service_healthy
+    volumes:
+      - ../data:/data:ro
+    command:
+      - sh
+      - -c
+      - >
+        ogr2ogr -overwrite -f PostgreSQL
+        "PG:host=postgis port=5432 dbname=nato user=nato password=nato"
+        /data/nato_defence_spending.gpkg
+        -nln public.nato_defence_spending
+        -lco GEOMETRY_NAME=geom
+        -lco FID=id
+        -nlt PROMOTE_TO_MULTI
+        -t_srs EPSG:4326
+
+  geoserver:
+    image: docker.osgeo.org/geoserver:2.28.x
+    container_name: nato_geoserver
+    ports:
+      - "8080:8080"
+    environment:
+      GEOSERVER_ADMIN_USER: admin
+      GEOSERVER_ADMIN_PASSWORD: geoserver
+      CORS_ENABLED: "true"
+      SKIP_DEMO_DATA: "true"
+    volumes:
+      - geoserver_data:/opt/geoserver_data
+      - ../data:/opt/geoserver_data/import:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/geoserver/web/"]
+      interval: 15s
+      timeout: 10s
+      retries: 20
+
+  geoserver-init:
+    image: curlimages/curl:8.11.1
+    container_name: nato_geoserver_init
+    depends_on:
+      geoserver:
+        condition: service_healthy
+      postgis-loader:
+        condition: service_completed_successfully
+    volumes:
+      - ../geoserver/styles:/styles:ro
+      - ./geoserver-init:/config:ro
+    entrypoint: ["sh", "/config/init-geoserver.sh"]
+    restart: "no"
+
+  webapp:
+    image: nginx:1.27-alpine
+    container_name: nato_webapp
+    depends_on:
+      geoserver-init:
+        condition: service_completed_successfully
+    ports:
+      - "8000:80"
+    volumes:
+      - ../webapp:/usr/share/nginx/html:ro
+
+volumes:
+  geoserver_data:
+  postgis_data:

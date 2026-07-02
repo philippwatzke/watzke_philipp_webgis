@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NATO-Verteidigungsausgaben WebGIS</title>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+    <!-- MapLibre CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+
+    <!-- Google Fonts (Outfit & JetBrains Mono) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body class="light-mode"> <!-- default theme class -->
+    <main class="app-shell">
+      
+      <!-- Sidebar Panel -->
+      <aside class="sidebar">
+        
+        <!-- Header & Theme Switcher -->
+        <div class="sidebar-header">
+          <div class="header-text">
+            <p class="kicker">Open-Source WebGIS</p>
+            <h1>NATO-Verteidigung</h1>
+            <p class="subtitle">Vergleich der Militärausgaben mit dem 5-%-Zielwert 2035.</p>
+          </div>
+          <div class="theme-switch-container">
+            <button id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Theme umschalten" title="Theme umschalten (Hell/Dunkel)">
+              <!-- Sun / Moon Icon will be injected or updated in JS -->
+              <svg id="theme-btn-icon" viewBox="0 0 24 24">
+                <!-- Moon icon default -->
+                <path d="M12 3c.132 0 .263 0 .393.007a7.5 7.5 0 0 0 7.92 12.446A9 9 0 1 1 12 3z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Metric Card (Tab Switch) -->
+        <section class="control-card" aria-labelledby="metric-title">
+          <h2 id="metric-title">Kennzahl</h2>
+          <div class="tab-switch">
+            <button type="button" id="metric-actual-btn" class="tab-btn active" data-value="actual">Ist-Ausgaben</button>
+            <button type="button" id="metric-gap-btn" class="tab-btn" data-value="gap">Abstand zum Ziel</button>
+          </div>
+        </section>
+
+        <!-- Basemap Card (Leaflet Only) -->
+        <section class="control-card" id="basemap-card" aria-labelledby="basemap-title">
+          <h2 id="basemap-title">Basiskarte</h2>
+          <div class="basemap-switch">
+            <button type="button" id="basemap-osm-btn" class="basemap-btn active" data-value="osm">OSM Light</button>
+            <button type="button" id="basemap-carto-btn" class="basemap-btn" data-value="carto">CARTO Positron</button>
+          </div>
+        </section>
+
+        <!-- Swipe Card (Leaflet Only) -->
+        <section class="control-card" id="swipe-card" aria-labelledby="swipe-title">
+          <h2 id="swipe-title">Vergleich</h2>
+          <div class="swipe-card-content">
+            <label class="custom-toggle">
+              <span>Swipe-Modus aktivieren</span>
+              <input type="checkbox" id="swipe-toggle">
+              <span class="toggle-track">
+                <span class="toggle-thumb"></span>
+              </span>
+            </label>
+            <p>Ermöglicht den direkten, horizontalen Vergleich zwischen Ist-Ausgaben (links) und Zielabstand (rechts).</p>
+          </div>
+        </section>
+
+        <!-- Legend Card -->
+        <section class="control-card">
+          <h2>Legende</h2>
+          <div class="legend-card-container">
+            <!-- Light Mode Legend (WMS Image) -->
+            <div id="legend-light" class="legend-wrapper">
+              <div class="legend-image-container">
+                <img id="legend-img" alt="WMS Legende" src="">
+              </div>
+            </div>
+            <!-- Dark Mode Legend (Custom swatches with custom colors) -->
+            <div id="legend-dark" class="legend-wrapper" style="display: none;">
+              <div id="legend-dark-content" class="custom-legend">
+                <!-- Injected in JS -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </aside>
+
+      <!-- Map Panel -->
+      <section class="map-panel" aria-label="Interaktive Karte">
+        <!-- Dual map containers -->
+        <div id="map-leaflet" class="map-container"></div>
+        <div id="map-maplibre" class="map-container hidden"></div>
+      </section>
+      
+    </main>
+
+    <!-- Leaflet JS Library -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <!-- MapLibre JS Library -->
+    <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+    
+    <!-- Unified Application Logic -->
+    <script src="js/main.js"></script>
+  </body>
+</html>
